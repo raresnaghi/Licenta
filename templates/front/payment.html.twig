@@ -11,6 +11,7 @@
                 <div>
                     <h6 class="my-0">{{app.session.get('planName')|capitalize}} plan</h6>
                 </div>
+
                 <span class="text-muted">${{app.session.get('planPrice')}}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between bg-light">
@@ -22,7 +23,6 @@
             </li>
             <li class="list-group-item d-flex justify-content-between">
                 <span>Total (USD)</span>
-
                 <strong>${{app.session.get('planPrice')}}</strong>
             </li>
         </ul>
@@ -32,7 +32,7 @@
 
         <h4 class="mb-3">Pay with PayPal <small>or get other <a href="{{path('pricing')}}">plan</a></small></h4>
         <hr class="mb-4">
-        <a href="{{path('payment',{'paypal':'paypal'})}}" class="btn btn-primary btn-lg btn-block" role="button">Continue to checkout</a>
+        <a href="{{subscribe}}" class="btn btn-primary btn-lg btn-block" role="button">Continue to checkout</a>
 
     </div>
 </div>
