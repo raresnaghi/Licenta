@@ -1,6 +1,6 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    secret: '%env(APP_SECRET)%'
+    secret: "%env(APP_SECRET)%"
     #csrf_protection: true
     #http_method_override: true
 
@@ -8,6 +8,7 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         handler_id: null
+        # handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\ReddisSessionHandler
         cookie_secure: auto
         cookie_samesite: lax
 

@@ -1,0 +1,5 @@
+security:
+  firewalls:
+    #replace "main" with the name of my firewall
+    main:
+      http_basic: ~

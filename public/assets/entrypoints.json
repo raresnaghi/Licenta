@@ -1,5 +1,12 @@
 {
   "entrypoints": {
+    "js/likes": {
+      "js": [
+        "/assets/runtime.js",
+        "/assets/vendors-node_modules_core-js_modules_es_parse-int_js-node_modules_core-js_modules_es_string_r-f48d8e.js",
+        "/assets/js/likes.js"
+      ]
+    },
     "css/dashboard": {
       "js": [
         "/assets/runtime.js"
@@ -14,6 +21,14 @@
       ],
       "css": [
         "/assets/css/login.css"
+      ]
+    },
+    "css/likes": {
+      "js": [
+        "/assets/runtime.js"
+      ],
+      "css": [
+        "/assets/css/likes.css"
       ]
     }
   }

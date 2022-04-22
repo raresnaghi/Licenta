@@ -19,39 +19,40 @@
 
     {% block customstylesheets %}{% endblock %}
 
-    <title>{% block title %}Symfony 4 course app - video sharing service {% endblock %}</title>
+    <title>{% block title %}Symfony 4 video sharing service{% endblock %}</title>
 
 </head>
 
 <body class="text-center">
     <div class="container-fluid">
-    {% block menu %}
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+{% block menu %}
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
     <h5 class="my-0 mr-md-auto font-weight-normal"><a href="{{path('main_page')}}">Awesome Videos</a></h5>
 
-    <form method="POST" class="form-inline my-0 mr-md-auto" action="{{path('search_results')}}">
-        <input class="form-control mr-sm-2" type="search" placeholder="video title" aria-label="Search video">
+    <form method="GET" class="form-inline my-0 mr-md-auto" action="{{path('search_results')}}">
+        <input name="query" class="form-control mr-sm-2" type="search" placeholder="video title" aria-label="Search video">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search video</button>
     </form>
 
-    <nav class="my-2 my-md-0 mr-md-3">
+    <nav class="my-2 my-md-0 mr-md-3">        
         {{ render(controller("App\\Controller\\FrontController::mainCategories")) }}
+        {% if app.user %}
         <a class="p-2 text-dark" href="{{path('admin_main_page')}}">My account</a>
+        {% endif %}
     </nav>
+    {% if not app.user %}
     <a class="btn btn-outline-primary mr-2" href="{{path('pricing')}}">Sign up</a>
     <a class="btn btn-outline-primary" href="{{path('login')}}">Sign in</a>
+    {% endif %}
 </div>
-    {% endblock %}
-
-    {% block main %}
-
-    {% endblock %}
-
-    {% block footer_links %}
-    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+{% endblock %}
+{% block main %}
+{% endblock %}
+{% block footer_links %}
+<footer class="pt-4 my-md-5 pt-md-5 border-top">
     <div class="row">
         <div class="col-12 col-md">
-            <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
+            <small class="d-block mb-3 text-muted">&copy; Rares Naghi 2022</small>
         </div>
         <div class="col-6 col-md">
             <h5>Features</h5>
@@ -86,22 +87,21 @@
         </div>
     </div>
 </footer>
-    {% endblock %}
-
+{% endblock %}
     </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="{{asset('assets/js/jquery.js')}}"></script>
 <script src="{{asset('assets/js/popper.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap.js')}}"></script>
+{# <script src="{{asset('assets/runtime.js')}}"></script> #}
+
 
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
-{% block customjavascripts %}
-
-{% endblock %}
+{% block customjavascripts %}{% endblock %}
 </body>
 </html>
