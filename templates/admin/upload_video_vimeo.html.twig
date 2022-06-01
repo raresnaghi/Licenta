@@ -2,24 +2,23 @@
 
 {% block mainadmin %} 
 <h2>Upload a video</h2>
-
 <div class="app-user-vimeo-token" data-user-token="{{ app.user.vimeoApiKey }}"></div>
-
-    <form method="POST" id="form-upload" action="#" enctype="multipart/form-data">
+    <form method="POST" id="form-upload" action="{{ path('upload_video_by_vimeo') }}" enctype="multipart/form-data">
         <div class="form-group">
             <div class="custom-file">
                     <input type="file" name="file_data" class="custom-file-input" id="customFile" onchange="onFormChange()">
                     <label class="custom-file-label" for="customFile">Choose file</label>
+                    <input type="hidden" name="vimeo_uri" id="vimeo_uri">
+                    <input type="hidden" name="vimeoName" id="vimeoName">
             </div> 
         </div>
-        <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+        <button type="submit" id="submit-button" disabled class="btn btn-primary">Submit</button>
    </form>
 {% endblock %}
 
 {% block customjavascripts %}
 {{parent()}}
 <script>
-
 var userVimeoToken = null;
 document.addEventListener('DOMContentLoaded', function() {
     var userVimeoTokenDiv = document.querySelector('.app-user-vimeo-token');
@@ -35,20 +34,29 @@ function onFormChange()
     var fileName = document.getElementById('customFile').files.item(0).name;
     fileName =  fileName.replace(/\.[^.]+$/, '');
 
-    var data = "upload.approach=post&name="+fileName+"&privacy.view=anybody&upload.redirect_url={{url('upload_video_by_vimeo')}}?videoName%3D"+fileName;
+    //var data = "upload.approach=post&name="+fileName+"&privacy.view=anybody&upload.redirect_url={{url('upload_video_by_vimeo')}}?videoName%3D"+fileName;
+    var data = "upload.approach=post&name="+fileName+"?videoName%3D"+fileName;
 
     var xhr = new XMLHttpRequest();
 
     xhr.addEventListener("readystatechange", function () {
     if (this.readyState === 4) {
         var myObj = JSON.parse(this.responseText);
-        {# console.log(myObj.upload.form); #}
 
         document.getElementById("submit-button").disabled = false;
         document.getElementById("submit-button").innerHTML = 'You can now upload the video';
-
-        document.getElementById('form-upload').action = myObj.upload.upload_link;
-
+        console.log(myObj);
+        //document.getElementById('form-upload').action = myObj.upload.upload_link;
+        console.log(myObj.name.substr(0,myObj.name.indexOf('?')));
+        if(!myObj.error) {
+            console.log("I'm here, in if");
+            document.getElementById("vimeo_uri").value = myObj.uri;
+            document.getElementById("vimeoName").value = myObj.name.substr(0,myObj.name.indexOf('?')); 
+            //document.getElementById("vimeoName").value = myObj.name;
+        }
+        else {
+            alert(myObj.error);
+        }
     }
     });
 

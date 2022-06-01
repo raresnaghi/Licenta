@@ -17,7 +17,7 @@ class Video
 
     public const videoForNotLoggedInOrNoMembers = 'https://player.vimeo.com/video/113716040';
     public const VimeoPath = 'https://player.vimeo.com/video/';
-    public const perPage = 5; // for pagination
+    public const perPage = 6; // for pagination
     public const uploadFolder = '/uploads/videos/';
 
     /**
@@ -70,6 +70,11 @@ class Video
      *  @Assert\File(mimeTypes={ "video/mp4" }) 
      */
     private $uploaded_video;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $source;
 
     public function __construct()
     {
@@ -232,6 +237,26 @@ class Video
     public function setUploadedVideo($uploaded_video): self
     {
         $this->uploaded_video = $uploaded_video;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of source
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * Set the value of source
+     *
+     * @return  self
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
 
         return $this;
     }

@@ -14,9 +14,21 @@
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         <div align="center" class="embed-responsive embed-responsive-16by9">
-                            
-                                <iframe class="" src="{{videoid}}" frameborder="0"
-                                 allowfullscreen></iframe> 
+                                {% if video.source == 'server' and environment == 'dev' %}
+                                <iframe src="http://localhost/Symfony%20applications/Licenta/public/{{videoid}}" frameborder="0"
+                                 allowfullscreen></iframe>
+                                {% elseif video.source == 'vimeo' and environment == 'dev' %}
+                                <iframe src="{{videoid}}" frameborder="0"
+                                 allowfullscreen></iframe>
+                                {% elseif video.source == 'server' and environment == 'prod' %} 
+                                <iframe src="http://localhost/Symfony%20applications/Licenta/public/{{videoid}}" frameborder="0"
+                                 allowfullscreen></iframe>
+                                {% elseif video.source == 'vimeo' and environment == 'prod' %}
+                                <iframe src="{{videoid}}" frameborder="0"
+                                 allowfullscreen></iframe>
+                                {% endif %} 
+ 
+
 
                         </div>
                         <div class="card-body">
@@ -47,3 +59,61 @@
             </div>
         </div>
     </div>
+<script>
+window.onload = function () {
+        if (window.jQuery) {
+        $(document).ready(function () {
+            $('button.toggle-likes').on('click', function (e) {
+                var $link = $(this).attr('likes-link');
+
+                $.ajax({
+                    method: 'POST',
+                    url: $link,
+                }).done(function (data) {
+                    switch (data.action) {
+                        case 'liked':
+                            var number_of_likes_str = $('.number-of-likes-' + data.id);
+                            var number_of_likes = parseInt(number_of_likes_str.html().replace(/\D/g, '')) + 1;
+                            number_of_likes_str.html('(' + number_of_likes + ')');
+                            $('.likes-video-id-' + data.id).show();
+                            $('.dislikes-video-id-' + data.id).hide();
+                            $('.video-id-' + data.id).hide();
+
+                            break;
+                        case 'disliked':
+                            var number_of_dislikes_str = $('.number-of-dislikes-' + data.id);
+                            var number_of_dislikes = parseInt(number_of_dislikes_str.html().replace(/\D/g, '')) + 1;
+                            number_of_dislikes_str.html('(' + number_of_dislikes + ')');
+                            $('.dislikes-video-id-' + data.id).show();
+                            $('.likes-video-id-' + data.id).hide();
+                            $('.video-id-' + data.id).hide();
+
+                            break;
+                        case 'undo liked':
+                            var number_of_likes_str = $('.number-of-likes-' + data.id);
+
+                            var number_of_likes = parseInt(number_of_likes_str.html().replace(/\D/g, '')) - 1;
+                            number_of_likes_str.html('(' + number_of_likes + ')');
+                            $('.video-id-' + data.id).show();
+                            $('.dislikes-video-id-' + data.id).hide();
+                            $('.likes-video-id-' + data.id).hide();
+
+                            break;
+                        case 'undo disliked':
+                            var number_of_dislikes_str = $('.number-of-dislikes-' + data.id);
+                            var number_of_dislikes = parseInt(number_of_dislikes_str.html().replace(/\D/g, '')) - 1;
+                            number_of_dislikes_str.html('(' + number_of_dislikes + ')');
+                            $('.video-id-' + data.id).show();
+                            $('.dislikes-video-id-' + data.id).hide();
+                            $('.likes-video-id-' + data.id).hide();
+
+                            break;
+                    }
+                })
+            });
+        });
+    } else {
+        console.log('Likes functionality not working without jQuery');
+    }
+}
+</script>

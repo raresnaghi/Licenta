@@ -37,6 +37,7 @@ class SuperAdminController extends AbstractController
             $base_path = Video::uploadFolder;
             $video->setPath($base_path . $fileName[0]);
             $video->setTitle($fileName[1]);
+            $video->setSource('server');
 
             $em->persist($video);
             $em->flush();
@@ -55,12 +56,17 @@ class SuperAdminController extends AbstractController
      */
     public function uploadVideoByVimeo(Request $request)
     {
-        $vimeo_id = preg_replace('/^\/.+\//', '', $request->get('video_uri'));
-        if ($request->get('videoName') && $vimeo_id) {
+        $vimeo_id = $request->request->get('vimeo_uri');
+        // dump($request);
+        var_dump($request->request->get('vimeoName'));
+        var_dump($vimeo_id);
+
+        if ($request->request->get('vimeoName') && $vimeo_id) {
             $em = $this->getDoctrine()->getManager();
             $video = new Video();
-            $video->setTitle($request->get('videoName'));
+            $video->setTitle($request->request->get('vimeoName'));
             $video->setPath(Video::VimeoPath . $vimeo_id);
+            $video->setSource('vimeo');
 
             $em->persist($video);
             $em->flush();

@@ -49,6 +49,7 @@ class FrontController extends AbstractController
 
             $categories->getCategoryListAndParent($id);
             $response = $this->render('front/video_list.html.twig', [
+                'environment' => $_ENV["APP_ENV"],
                 'subcategories' => $categories,
                 'videos' => $videos,
                 'video_no_members' => $video_no_members->check()
@@ -66,6 +67,7 @@ class FrontController extends AbstractController
      */
     public function videoDetails(VideoRepository $repo, $video, VideoForNoValidSubscription $video_no_members)
     {
+        //$this->uploadsVideos();
         return $this->render(
             'front/video_details.html.twig',
             [
@@ -73,6 +75,13 @@ class FrontController extends AbstractController
                 'video_no_members' => $video_no_members->check()
             ]
         );
+    }
+    // /**
+    //  * @Route("/uploads/videos/{video_id}.mp4", name="uploads_video")
+    //  */
+    public function uploadsVideos()
+    {
+        return "ANC";
     }
 
     /**
@@ -131,6 +140,7 @@ class FrontController extends AbstractController
         }
 
         return $this->render('front/search_results.html.twig', [
+            'environment' => $_ENV["APP_ENV"],
             'videos' => $videos,
             'query' => $query,
             'video_no_members' => $video_no_members->check()
@@ -156,7 +166,6 @@ class FrontController extends AbstractController
      */
     public function toggleLikesAjax(Video $video, Request $request)
     {
-
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
         switch ($request->get('_route')) {

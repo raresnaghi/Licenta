@@ -3,7 +3,17 @@
 {% block customstylesheets %}
 {{parent()}}
 {% if app.user %}
-<link rel="stylesheet" href="{{asset('assets/css/likes.css')}}">
+{# <link rel="stylesheet" href="{{asset('assets/css/likes.css')}}"> #}
+<style>
+.click-to-unlike-video,
+.click-to-undo-dislike-video{
+    display: none;
+}
+.click-to-like-video,
+.click-to-dislike-video {
+    display: block;
+}
+</style>
 {% endif %}
 {% endblock %}
 
@@ -19,7 +29,7 @@
     </div>
 </section>
 {% if videos %}
-{{ include('front/includes/_videos.html.twig', {'videos' : videos}) }}
+{{ include('front/includes/_videos.html.twig', {'videos' : videos, 'environment' : environment}) }}
 {{ knp_pagination_render(videos) }}
 {% endif %}
 {% endblock %}
@@ -27,6 +37,93 @@
 {{parent()}}
 {% if app.user %}
 <script src="{{asset('assets/js/likes.js')}}"></script>
+<script>
+{# $(document).ready(function () {
+    $('.click-to-like-video').on('click', function(){
+    $('.click-to-like-video').css('display','none');
+    $('.click-to-unlike-video').css('display','block');
+})
+
+$('.click-to-unlike-video').on('click', function(){
+    $('.click-to-unlike-video').css('display','none');
+    $('.click-to-like-video').css('display','block');
+})
+
+
+$('.click-to-dislike-video').on('click', function(){
+    $('.click-to-dislike-video').css('display','none');
+    $('.click-to-undo-dislike-video').css('display','block');
+})
+
+$('.click-to-undo-dislike-video').on('click', function(){
+    $('.click-to-undo-dislike-video').css('display','none');
+    $('.click-to-dislike-video').css('display','block');
+})
+
+    $('.toogle-likes').click(function (e) {
+        alert("dupa toggle-likes");
+        //e.preventDefault();
+        var $link = $(e.currentTarget);
+        alert($link);
+        $.ajax({
+            method: 'POST',
+            url: $link.attr('href')
+        }).done(function (data) {
+            switch (data.action) {
+                case 'liked':
+                    console.log("case liked");
+                    var number_of_likes_str = $('.number-of-likes-' + data.id);
+                    var number_of_likes = parseInt(number_of_likes_str.html().replace(/\D/g, '')) + 1;
+                    number_of_likes_str.html('(' + number_of_likes + ')');
+                    $('.likes-video-id-' + data.id).show();
+                    let s = $('.likes-video-id-' + data.id);
+                    console.log(s);
+                    $('.dislikes-video-id-' + data.id).hide();
+                    $('.video-id-' + data.id).hide();
+
+                    break;
+                case 'disliked':
+                    console.log("case unliked");
+                    var number_of_dislikes_str = $('.number-of-dislikes-' + data.id);
+                    var number_of_dislikes = parseInt(number_of_dislikes_str.html().replace(/\D/g, '')) + 1;
+                    number_of_dislikes_str.html('(' + number_of_dislikes + ')');
+                    $('.dislikes-video-id-' + data.id).show();
+                    $('.likes-video-id-' + data.id).hide();
+                    $('.video-id-' + data.id).hide();
+
+                    break;
+                case 'undo liked':
+                    console.log("case unde liked");
+                    var number_of_likes_str = $('.number-of-likes-' + data.id);
+
+                    var number_of_likes = parseInt(number_of_likes_str.html().replace(/\D/g, '')) - 1;
+                    number_of_likes_str.html('(' + number_of_likes + ')');
+                    $('.video-id-' + data.id).show();
+                    $('.dislikes-video-id-' + data.id).hide();
+                    $('.likes-video-id-' + data.id).hide();
+
+                    break;
+
+                case 'undo disliked':
+                    console.log("case undo disliked");
+                    var number_of_dislikes_str = $('.number-of-dislikes-' + data.id);
+                    var number_of_dislikes = parseInt(number_of_dislikes_str.html().replace(/\D/g, '')) - 1;
+                    number_of_dislikes_str.html('(' + number_of_dislikes + ')');
+                    $('.video-id-' + data.id).show();
+                    $('.dislikes-video-id-' + data.id).hide();
+                    $('.likes-video-id-' + data.id).hide();
+
+
+                    break;
+
+            }
+
+        })
+    });
+
+}); #}
+
+</script>
 {% endif %}
 {% endblock %}
 

@@ -13,7 +13,8 @@ class VimeoUploader implements UploaderInterface
 
     public function __construct(Security $security)
     {
-        $this->vimeoToken = $security->getUser()->getVimeoApiKey();
+        $securityUser = $security->getUser();
+        $this->vimeoToken = $securityUser->getVimeoApiKey();
     }
 
     public function upload($file)

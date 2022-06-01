@@ -47,7 +47,6 @@ class SecurityController extends AbstractController
      */
     public function register(UserPasswordEncoderInterface $password_encoder, Request $request, SessionInterface $session, $plan)
     {
-
         if ($request->isMethod('GET')) {
             $session->set('planName', $plan);
             $session->set('planPrice', Subscription::getPlanDataPriceByName($plan));
@@ -66,7 +65,6 @@ class SecurityController extends AbstractController
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
 
-            // c_93
             $date = new \Datetime();
             $date->modify('+1 month');
             $subscription = new Subscription();
